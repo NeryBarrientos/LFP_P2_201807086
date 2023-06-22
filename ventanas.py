@@ -22,7 +22,13 @@ def cerrar_ventana(segundos_restantes):
 #LLamado Ventanas
 def mostrar_principal():
     miFrameV.pack_forget()
-    miFrameV.pack(side="top", fill="both", expand=True)
+    var_ventana_gramaticas.pack_forget()
+    var_ventana_principal.pack(side="top", fill="both", expand=True)
+
+def mostrar_modulo_gramaticas():
+    miFrameV.pack_forget()
+    var_ventana_principal.pack_forget()
+    var_ventana_gramaticas.pack(side="top", fill="both", expand=True)
 
 def ventana_principal(master, callback=None, args=(), kwargs={}):
     if callback is not None:
@@ -35,12 +41,32 @@ def ventana_principal(master, callback=None, args=(), kwargs={}):
     # agregando botones
     label = Label(frame_centrado, text="Menú Principal")
     label.grid(row=0, column=0, padx=10, pady=10)
-    boton_modulo_gramaticas = Button(frame_centrado, text='Módulo Grámaticas',width=15, height=3, bd="4", command=None)
+    boton_modulo_gramaticas = Button(frame_centrado, text='Módulo Grámaticas',width=15, height=3, bd="4", command=mostrar_modulo_gramaticas)
     boton_modulo_gramaticas.grid(row=1, column=0, padx=10, pady=10)
     boton_modulo_ap = Button(frame_centrado, text='Módulo AP',width=15, height=3, bd="4", command=None)
     boton_modulo_ap.grid(row=2, column=0, padx=10, pady=10)
     boton_salir = Button(frame_centrado, text='Salir', width=15,height=3, command=callback, bd="4")
     boton_salir.grid(row=3, column=0, padx=10, pady=10)
+    return main_frame
+
+def ventana_modulo_gramaticas(master, callback=None, args=(), kwargs={}):
+    if callback is not None:
+        callback = functools.partial(callback, *args, **kwargs)
+    main_frame = Frame(master)
+    # frame centrado
+    frame_centrado = Frame(main_frame, height=310, width=450)
+    frame_centrado.place(relx=0.5, rely=0.5, anchor="center")
+    # agregando botones
+    label = Label(frame_centrado, text="Módulo Grámaticas")
+    label.grid(row=0, column=0, padx=10, pady=10)
+    boton_cargar = Button(frame_centrado,text="Cargar Archivo", command=funciones.cargar_gramaticas , width=15,height=3)
+    boton_cargar.grid(row=1,column=0,padx=10,pady=10)
+    boton_info = Button(frame_centrado,text="Información General", width=15,height=3)
+    boton_info.grid(row=2,column=0,padx=10,pady=10)
+    boton_arbol = Button(frame_centrado,text="Árbol de Derivación", width=15,height=3)
+    boton_arbol.grid(row=3,column=0,padx=10,pady=10)
+    boton_regresar = Button(frame_centrado, text='Regresar', width=15,height=3, command=callback, bd="4")
+    boton_regresar.grid(row=4, column=0, padx=10, pady=10)
     return main_frame
 
 # Abro venta
@@ -63,22 +89,12 @@ label.pack(side="top")
 miFrameV = Frame()
 miFrameV.pack(fill="x")
 miFrameV.place(x=0, y=25)
+
 miFrameV.config(width=ancho_ventana, height=alto_ventana,relief="solid", bd="3")
 # Funciones para ventanas en botones
 var_ventana_principal = ventana_principal(ventana, funciones.salir)
-# var_ventana_evaluar_afn = ventana_evaluar_afn(ventana,mostrar_ventana_afn)
-# var_ventana_validar_afn = ventana_validar_afn(ventana,mostrar_ventana_evaluar_afn)
-# var_ventana_ruta_afn = ventana_ruta_afn(ventana,mostrar_ventana_evaluar_afn)
-# var_ventana_ruta_afd = ventana_ruta_afd(ventana,mostrar_ventana_evaluar_afd)
-# var_ventana_afn_crear = ventana_afn_crear(ventana, mostrar_ventana_afn)
-# var_ventana_ayuda_afn = ventana_afn_ayuda(ventana,mostrar_ventana_afn)
-# var_ventana_afd = ventana_afd(ventana, mostrar_principal)
-# var_ventana_evaluar_afd = ventana_evaluar_afd(ventana,mostrar_ventana_afd)
-# var_ventana_validar_afd = ventana_validar_afd(ventana,mostrar_ventana_evaluar_afd)
-# var_ventana_afd_crear = ventana_afd_crear(ventana, mostrar_ventana_afd)
-# var_ventana_ayuda_afd = ventana_afd_ayuda(ventana,mostrar_ventana_afd)
-# var_ventana_oe = ventana_oe(ventana, mostrar_principal)
-# var_ventana_cargar_archivos = ventana_cargar(ventana, mostrar_principal)
+var_ventana_gramaticas = ventana_modulo_gramaticas(ventana,mostrar_principal)
+
 # agregando Items a frame Variable
 frame_centrado = Frame(miFrameV, height=310, width=450)
 frame_centrado.place(relx=0.5, rely=0.5, anchor="center")
