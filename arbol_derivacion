@@ -1,9 +1,0 @@
-digraph {
-	S [label=S]
-	SA [label=S]
-	AA [label=A]
-	SA -> AA
-	Aa [label=A]
-	AAa [label=a]
-	Aa -> AAa
-}
