@@ -18,7 +18,7 @@ Luego en el menú de <b>Información General</b>, nos mostrará la siguiente pan
 Donde al presionar el botón <b>Mostrar Grámaticas</b> nos aparecerá una lista con el nombre de las grámaticas cargadas, al presionar el boton <b>Mostrar Información</b>, nos motrará la información de la grámatica:
 ![Informacion cargada](/imagenes/info_gramaticas1.PNG "Figura 6"), luego podremos regresar al menu anterior mostrado en la [Figura 2](#figura2).
 Al entrar en el menú de <b>Arbol de Derivación</b> nos mostrara una pantalla parecida a la de la [Figura 5](#figura5), solo que al presionar nos mostrará un archivo pdf de la siguiente forma:
-![Arbol de Derivación](/imagenes/ "Figura 7")
+![Arbol de Derivación](/imagenes/grafo_derivacion.png "Figura 7")
 Luego de eso regresaremos a el menu principal del programa como se muestra en la <b>Figura 2</b>
 Ingresaremos al <b>Módulo AP</b>:
 ![Módulo AP (/imagenes/modulo_ap.PNG)](/imagenes/modulo_ap.PNG "Figura 8")
