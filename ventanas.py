@@ -6,11 +6,7 @@ from ttkthemes import ThemedTk
 import graphviz
 from graphviz import Digraph
 import webbrowser
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from PIL import ImageTk, Image
-import os
-import sys
+
 
 import funciones
 
@@ -32,6 +28,7 @@ def mostrar_principal():
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_principal.pack(side="top", fill="both", expand=True)
 
 def mostrar_modulo_gramaticas():
@@ -43,6 +40,7 @@ def mostrar_modulo_gramaticas():
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_gramaticas.pack(side="top", fill="both", expand=True)
 
 def mostrar_informacion_gramaticas():
@@ -54,6 +52,7 @@ def mostrar_informacion_gramaticas():
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_info_gramaticas.pack(side="top", fill="both", expand=True)
 
 def mostrar_ventana_arbol():
@@ -65,6 +64,7 @@ def mostrar_ventana_arbol():
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_arbol.pack(side="top", fill="both", expand=True)  
 
 def mostrar_ventana_automata_pila():
@@ -76,6 +76,7 @@ def mostrar_ventana_automata_pila():
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_automata_pila.pack(side="top", fill="both", expand=True)
 
 def mostrar_ventana_info_ap():
@@ -87,6 +88,7 @@ def mostrar_ventana_info_ap():
     var_ventana_automata_pila.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_info_automatasap.pack(side="top", fill="both", expand=True)
 
 def mostrar_ventana_validar_ap():
@@ -98,7 +100,9 @@ def mostrar_ventana_validar_ap():
     var_ventana_automata_pila.pack_forget()
     var_ventana_info_automatasap.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_validar_automatasap.pack(side="top", fill="both", expand=True)
+
 def mostrar_ventana_ruta_validacion_ap():
     miFrameV.pack_forget()
     var_ventana_principal.pack_forget()
@@ -108,7 +112,20 @@ def mostrar_ventana_ruta_validacion_ap():
     var_ventana_automata_pila.pack_forget()
     var_ventana_info_automatasap.pack_forget()
     var_ventana_validar_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack_forget()
     var_ventana_ruta_validacion_automatasap.pack(side="top", fill="both", expand=True)
+
+def mostrar_ventana_de_una_pasada():
+    miFrameV.pack_forget()
+    var_ventana_principal.pack_forget()
+    var_ventana_gramaticas.pack_forget()
+    var_ventana_info_gramaticas.pack_forget() 
+    var_ventana_arbol.pack_forget()  
+    var_ventana_automata_pila.pack_forget()
+    var_ventana_info_automatasap.pack_forget()
+    var_ventana_validar_automatasap.pack_forget()
+    var_ventana_ruta_validacion_automatasap.pack_forget()
+    var_ventana_validar_una_pasada.pack(side="top", fill="both", expand=True)
 
 #Ventanas
 
@@ -294,7 +311,7 @@ def ventana_modulo_automatas_pila(master, callback=None, args=(), kwargs={}):
     boton_ruta_validar.grid(row=4,column=0,padx=10,pady=10)
     boton_recorrido = Button(frame_centrado,text="Recorrido paso a paso", command=None , width=17,height=3)
     boton_recorrido.grid(row=5,column=0,padx=10,pady=10)
-    boton_validar_pasada = Button(frame_centrado,text="Validar de una pasada", command=None , width=17,height=3)
+    boton_validar_pasada = Button(frame_centrado,text="Validar de una pasada", command=mostrar_ventana_de_una_pasada , width=17,height=3)
     boton_validar_pasada.grid(row=6,column=0,padx=10,pady=10)
     boton_regresar = Button(frame_centrado, text='Regresar', width=17,height=3, command=callback, bd="4")
     boton_regresar.grid(row=7, column=0, padx=10, pady=10)
@@ -480,6 +497,47 @@ def ruta_validacion_automatasap():
         for transicion in bandera:
             print(f'{transicion[0]} , {transicion[1]} , {transicion[2]} ; {transicion[4]} , {transicion[3]}')
 
+def ventana_de_una_pasada(master, callback=None, args=(), kwargs={}):
+    global frame_de_una_pasada, boton_regresar_de_una_pasada
+    if callback is not None:
+        callback = functools.partial(callback, *args, **kwargs)
+
+    main_frame = Frame(master)
+    # frame centrado
+    frame_de_una_pasada = Frame(main_frame, height=310, width=450)
+    frame_de_una_pasada.place(relx=0.5, rely=0.5, anchor="center")
+    # agregando botones
+    label = Label(frame_de_una_pasada, text="Modulo Validar de una pasada")
+    label.grid(row=0, column=0, padx=10, pady=10)
+    label1 = Label(frame_de_una_pasada, text="Elija una Grámatica")
+    label1.grid(row=1, column=0, padx=10, pady=10,sticky='e')
+    boton_mostrar = Button(frame_de_una_pasada,text='Mostrar Grámaticas',width=15,height=3,command=mostrar_gramaticas_ap_validar_pasada,bd="4")
+    boton_mostrar.grid(row=1,column=2,padx=10,pady=10,sticky='w')
+    boton_regresar_de_una_pasada = Button(frame_de_una_pasada, text='Regresar', width=15,
+                            height=3, command=callback, bd="4")
+    boton_regresar_de_una_pasada.grid(row=3, column=0, padx=10, pady=10)
+    return main_frame
+
+def mostrar_gramaticas_ap_validar_pasada():
+    global combo_automatasap_validar_pasada,cadena_pasada
+    nombres_gramaticas = []
+    for element in funciones.informacion_ap:
+        nombres_gramaticas.append(element['nombre'])
+    combo_automatasap_validar_pasada = ttk.Combobox(frame_de_una_pasada,font=('Arial',10),state="readonly",values=nombres_gramaticas)
+    combo_automatasap_validar_pasada.grid(row=1,column=1,padx=10,pady=10)
+    boton_regresar_validar_ap.grid(row=3, column=1, padx=10, pady=10)
+    label2 = Label(frame_de_una_pasada, text="Ingrese una cadena")
+    label2.grid(row=2, column=0, padx=10, pady=10,sticky='e')
+    cadena_pasada = StringVar()
+    entry_cadena = Entry(frame_de_una_pasada,font=('Arial',12),justify="center",textvariable=cadena_pasada)
+    entry_cadena.grid(row=2, column=1, padx=10, pady=10)
+    boton_mostrar = Button(frame_de_una_pasada,text='Validar Cadena',width=15,height=3,command=ruta_validar_pasada,bd="4")
+    boton_mostrar.grid(row=2,column=2,padx=10,pady=10,sticky='w')
+
+def ruta_validar_pasada():
+    automata = funciones.buscar_automata_por_nombre(combo_automatasap_validar_pasada.get())
+    funciones.generar_tabla_html(automata,cadena_pasada.get())
+
 # Abro venta
 ventana = ThemedTk(theme="ubuntu")
 ancho_ventana = 1280
@@ -511,6 +569,7 @@ var_ventana_automata_pila = ventana_modulo_automatas_pila(ventana,mostrar_princi
 var_ventana_info_automatasap = ventana_informacion_automapasap(ventana,mostrar_ventana_automata_pila)
 var_ventana_validar_automatasap = ventana_validar_automapasap(ventana,mostrar_ventana_automata_pila)
 var_ventana_ruta_validacion_automatasap = ventana_ruta_validacion_automapasap(ventana,mostrar_ventana_automata_pila)
+var_ventana_validar_una_pasada = ventana_de_una_pasada(ventana,mostrar_ventana_automata_pila)
 
 # agregando Items a frame Variable
 frame_centrado = Frame(miFrameV, height=310, width=450)

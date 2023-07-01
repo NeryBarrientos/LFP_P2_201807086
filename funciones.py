@@ -268,3 +268,102 @@ def ruta_validacion(automata, cadena):
         mensaje = imprimir.center(75, ' ') +  imprimir1.center(75, ' ') + imprimir.center(75, ' ')
         messagebox.showinfo(message=mensaje, title="Mensaje")
         return False
+    
+def generar_tabla_html(automata, cadena):
+    pila = ['$']  # Pila inicializada con el símbolo inicial
+    estado_actual = automata['estado inicial']  # Estado inicial del autómata
+    
+    # Crear el contenido de la tabla HTML
+    contenido_tabla = '<table>'
+    contenido_tabla += '<tr><th>Iteraciones</th><th>Pila</th><th>Entrada</th><th>Transición</th></tr>'
+    
+    for i, simbolo in enumerate(cadena):
+        if simbolo not in automata['alfabeto']:
+            return False  # El símbolo no pertenece al alfabeto
+        
+        transicion_encontrada = False
+        transicion_obtenida = None
+        
+        # Buscar una transición válida para el estado actual y el símbolo de entrada
+        for transicion in automata['transiciones']:
+            estado_origen, simbolo_entrada, simbolo_pila, estado_destino, simbolo_insertar = transicion
+            
+            # Comprobar si la transición es válida
+            if estado_origen == estado_actual and (simbolo_entrada == simbolo or simbolo_entrada == '$') and (simbolo_pila == pila[-1] or simbolo_pila == '$'):
+                # Aplicar la transición actualizando el estado y la pila
+                estado_actual = estado_destino
+                
+                if simbolo_pila != '$':
+                    pila.pop()
+                
+                if simbolo_insertar != '$':
+                    pila.extend(list(simbolo_insertar))
+                
+                transicion_encontrada = True
+                transicion_obtenida = transicion
+                break
+        
+        # Agregar una fila a la tabla con los datos de la iteración
+        contenido_tabla += f'<tr><td>{i + 1}</td><td>{" ".join(pila)}</td><td>{simbolo}</td><td>{transicion_obtenida}</td></tr>'
+        
+        if not transicion_encontrada:
+            return False  # No se encontró una transición válida
+    
+    # Comprobar si se puede realizar una transición lambda desde el estado actual
+    for transicion in automata['transiciones']:
+        estado_origen, simbolo_entrada, simbolo_pila, estado_destino, simbolo_insertar = transicion
+        
+        if estado_origen == estado_actual and simbolo_entrada == '$' and (simbolo_pila == pila[-1] or simbolo_pila == '$'):
+            estado_actual = estado_destino
+            
+            if simbolo_pila != '$':
+                pila.pop()
+            
+            if simbolo_insertar != '$':
+                pila.extend(list(simbolo_insertar))
+            
+            break
+    
+    # Agregar la última fila a la tabla con el estado final
+    contenido_tabla += f'<tr><td>{len(cadena) + 1}</td><td>{" ".join(pila)}</td><td>-</td><td>{estado_actual}</td></tr>'
+    
+    contenido_tabla += '</table>'
+    
+    # Crear el archivo HTML con estilo
+    contenido_html = f'''
+    <html>
+    <head>
+        <title>Tabla de Validación</title>
+        <style>
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+            }}
+            
+            th, td {{
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }}
+            
+            th {{
+                background-color: #f2f2f2;
+            }}
+        </style>
+    </head>
+    <body>
+        {contenido_tabla}
+    </body>
+    </html>
+    '''
+    
+    # Guardar el archivo HTML
+    with open('tabla_validacion.html', 'w') as archivo_html:
+        archivo_html.write(contenido_html)
+    
+    # Abrir el archivo HTML en un navegador web
+    import webbrowser
+    webbrowser.open('tabla_validacion.html')
+    
+    return True
+
